@@ -1,0 +1,51 @@
+<div class="container">
+  <div class="row">
+    <div class="col-md-7">
+      <h4 class="text-center mb-5 mt-5"><%= @event.name %></h4>
+      <div class="card rounded-0 mt-5 mb-5">
+        <%= image_tag "dummy-event.png", class: "card-img-top" %>
+        <div class="card-body">
+          <p class="lead"><%= @event.start_date.strftime("%b %m %Y %H:%M %p") %> To <%= @event.end_date.strftime("%b %m %Y %H:%M %p") %></p>
+          <%= render "partials/lorem_description" %>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-5">
+      <div id="map-single" class="mt-5 mb-5"></div>
+      <% if @event.tags.present? %>
+        <div class="card rounded-0">
+          <div class="card-body">
+            <p>
+              <p>Find more events for following tags</p>
+              <% @event.tags.each do |tag| %>
+                <%= link_to tag.name.titleize, tag_path(tag: tag.name), class: "btn btn-primary btn-sm mb-2" %>
+              <% end %>
+            </p>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>
+
+<script>
+  function initMap() {
+    var venue = {lat: <%= @event.latitude %>, lng: <%= @event.longitude %>};
+    var map = new google.maps.Map(
+      document.getElementById('map-single'), 
+      {zoom: 12, center: venue}
+    );
+
+    var infowindow = new google.maps.InfoWindow({
+      content: "<h3 style='color:#333;'><%= @event.name %></h3>" + "<p><%= @event.venue %></p>"
+    });
+    var marker = new google.maps.Marker({position: venue, map: map});
+    marker.addListener('click', function() {
+      infowindow.open(map, marker);
+    });
+  }
+</script>
+
+<script async defer
+  src="https://maps.googleapis.com/maps/api/js?key=<%= Rails.application.credentials.google_map_api_key %>&callback=initMap">
+</script>

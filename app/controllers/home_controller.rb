@@ -9,4 +9,8 @@ class HomeController < ApplicationController
     @events = Event.near([lat, long], 50, units: :km)
   end
 
+  def tagged_events
+    @events = Event.tagged_with(params[:tag])
+  end
+
 end
