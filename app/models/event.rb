@@ -3,6 +3,7 @@ class Event < ApplicationRecord
   accepts_nested_attributes_for :speakers, reject_if: :all_blank, allow_destroy: true
   has_many :sponsers
   accepts_nested_attributes_for :sponsers, reject_if: :all_blank, allow_destroy: true
+  has_many :event_tickets, dependent: :destroy
   acts_as_taggable_on :tags
   paginates_per 10
   geocoded_by :venue
