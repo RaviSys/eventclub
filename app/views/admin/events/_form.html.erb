@@ -1,0 +1,125 @@
+<%= form_for [:admin, event], html: { class: "user" } do |f| %>
+  <% if event.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(event.errors.count, "error") %> prohibited this event from being saved:</h2>
+
+      <ul>
+      <% event.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <%= f.hidden_field :latitude, id: :latitude %>
+  <%= f.hidden_field :longitude, id: :longitude %>
+
+  <div class="form-group">
+    <%= f.label :name %>
+    <%= f.text_field :name, class: "form-control rounded-0" %>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :description %>
+    <%= f.text_area :description, class: "form-control rounded-0", rows: "10" %>
+  </div>
+
+  <div class="form-group row">
+    <div class="col-md-6">
+      <%= f.label :start_date %>
+      <%= f.text_field :start_date, class: "form-control rounded-0", id: "start_date" %>
+    </div>
+    <div class="col-md-6">
+      <div class="form-group">
+        <%= f.label :end_date %>
+        <%= f.text_field :end_date, class: "form-control rounded-0", id: "end_date" %>
+      </div>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :cover_image %><br>
+    <%= f.file_field :cover_image %>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :venue %>
+    <%= f.text_field :venue, class: "form-control rounded-0", id: "autocomplete", onFocus: "geolocate()" %>
+  </div>
+
+  <div class="form-group row">
+    <div class="col-md-4">
+      <%= f.label :city %>
+      <%= f.text_field :city, class: "form-control rounded-0", disabled: true, id: :locality %>
+    </div>
+    <div class="col-md-4">
+      <%= f.label :state %>
+      <%= f.text_field :state, class: "form-control rounded-0", disabled: true, id: :administrative_area_level_1 %>
+    </div>
+    <div class="col-md-4">
+      <%= f.label :country %>
+      <%= f.text_field :country, class: "form-control rounded-0", disabled: true, id: :country %>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <%= f.label 'Tags(Provide some comma separated tags for your event)' %>
+    <%= f.text_field :tag_list, class: "form-control rounded-0", placeholder: "Comma separated tags", id: "event_tag_list", value: event.tag_list.join(", ") %>
+  </div>
+
+  <div id="speakers">
+    <h3>Add speakers this event</h3>
+    <hr>
+    <%= f.fields_for :speakers do |speaker| %>
+      <%= render 'speaker_fields', f: speaker %>
+    <% end %>
+    <div class="links">
+      <%= link_to_add_association 'Add Speaker', f, :speakers, class: "btn btn-primary rounded-0 mb-3" %>
+    </div>
+  </div>
+  <div id="sponsers">
+    <h3>Add speakers this event</h3>
+    <hr>
+    <%= f.fields_for :sponsers do |sponser| %>
+      <%= render 'sponser_fields', f: sponser %>
+    <% end %>
+    <div class="links">
+      <%= link_to_add_association 'Add Sponser', f, :sponsers, class: "btn btn-primary rounded-0 mb-3" %>
+    </div>
+  </div>
+
+  <div class="actions">
+    <%= f.submit class: "btn btn-primary btn-lg shadow rounded-0" %>
+    <%= link_to 'Cancel', admin_events_path, class: "btn btn-outline-secondary btn-lg rounded-0" %>
+  </div>
+<% end %>
+
+<script type="text/javascript">
+  $(function () {
+    $('#start_date').datetimepicker({
+      format: 'DD-MM-YYYY HH:mm:ss'
+    });
+    $('#end_date').datetimepicker({
+      format: 'DD-MM-YYYY HH:mm:ss'
+    });
+
+    $('#event_tag_list').selectize({
+    plugins: ['remove_button'],
+    delimiter: ',',
+    persist: false,
+    create: function(input) {
+      return {
+        value: input,
+        text: input
+      }
+    }
+});
+
+  });
+</script>
+
+
+<script 
+  src="https://maps.googleapis.com/maps/api/js?key=<%= Rails.application.credentials.google_map_api_key %>&libraries=places&callback=initAutocomplete"
+  async defer>
+</script>

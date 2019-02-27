@@ -1,0 +1,29 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-12">
+      <div class="card rounded-0">
+        <div class="card-body">
+          <h3 class="font-weight-bold mt-2 mb-3">Event Speakers</h3>
+          <table class="table table-bordered">
+            <thead>
+              <tr>
+                <th>Speaker</th>
+                <th>Event</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% @speakers.each do |speaker| %>
+                <tr>
+                  <td><%= speaker.name %></td>
+                  <td><%= speaker.event.name %></td>
+                  <td><%= link_to "Show", admin_speaker_path(speaker), class: "btn btn-sm btn-primary rounded-0" %></td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,136 @@
+<div class="row">
+  <div class="col-md-12">
+    <p id="notice"><%= notice %></p>
+    <div class="card rounded-0">
+      <div class="card-body">
+        <div class="row">
+          <div class="col-md-8">
+            <p>
+              <strong>Name:</strong>
+              <%= @event.name %>
+            </p>
+
+            <p>
+              <strong>Description:</strong>
+              <%= @event.description %>
+            </p>
+
+            <p>
+              <strong>Start date:</strong>
+              <%= @event.start_date.strftime("%B %d %Y %H:%M %p") %>
+            </p>
+
+            <p>
+              <strong>End date:</strong>
+              <%= @event.end_date.strftime("%B %d %Y %H:%M %p") %>
+            </p>
+
+            <p>
+              <strong>Cover image:</strong>
+              <%= @event.cover_image %>
+            </p>
+
+            <p>
+              <strong>Venue:</strong>
+              <%= @event.venue %>
+            </p>
+
+            <p>
+              <strong>City:</strong>
+              <%= @event.city %>
+            </p>
+
+            <p>
+              <strong>State:</strong>
+              <%= @event.state %>
+            </p>
+
+            <p>
+              <strong>Country:</strong>
+              <%= @event.country %>
+            </p>
+
+            <p>
+              <strong>Tags:</strong>
+              <% @event.tags.each do |tag| %>
+                <span class="badge badge-success ml-2"><%= "#{tag}".capitalize %></span>
+              <% end %>
+            </p>
+
+          </div>
+          <div class="col-md-4">
+            <div id="map"></div>
+          </div>
+        </div>
+        <% if @event.speakers.present? %>
+          <div class="row mt-4 mb-5">
+            <div class="col-12">
+              <h4 class="font-weight-bold mt-2 mb-4">Event Speakers</h4>
+            </div>
+            <% @event.speakers.each do |speaker| %>
+              <div class="col-md-3">
+                <div class="card rounded-0 text-center">
+                  <div class="card-body">
+                    <%= image_tag 'user.png', width:"150", height:"150" %>
+                    <h6 class="mt-2"><%= speaker.name %></h6>
+                    <h6 class="mt-2"><%= speaker.organization %></h6>
+                    <h6 class="mt-2"><%= speaker.address %></h6>
+                  </div>
+                </div>
+              </div>
+            <% end %>
+          </div>
+        <% end %>
+        <% if @event.sponsers.present? %>
+          <div class="row mt-4 mb-5">
+            <div class="col-12">
+              <h4 class="font-weight-bold mt-2 mb-4">Event Sponsers</h4>
+            </div>
+            <% @event.sponsers.each do |sponser| %>
+              <div class="col-md-3">
+                <div class="card rounded-0 text-center">
+                  <div class="card-body">
+                    <%= image_tag 'user.png', width:"150", height:"150" %>
+                    <h6 class="mt-2"><%= sponser.sponsered_by %></h6>
+                    <h6 class="mt-2"><%= sponser.website %></h6>
+                    <h6 class="mt-2"><%= sponser.contact %></h6>
+                  </div>
+                </div>
+              </div>
+            <% end %>
+          </div>
+        <% end %>          
+        <%= link_to 'Edit', edit_admin_event_path(@event),class: "btn btn-secondary btn-sm rounded-0" %> |
+        <%= link_to 'Back', admin_events_path,class: "btn btn-primary btn-sm rounded-0" %>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  function initMap() {
+    var venue = {lat: <%= @event.latitude %>, lng: <%= @event.longitude %>};
+    var map = new google.maps.Map(
+      document.getElementById('map'), 
+      {zoom: 12, center: venue}
+    );
+    var infowindow = new google.maps.InfoWindow({
+      content: "<h3 style='color:#333;'><%= @event.name %></h3>" + "<p><%= @event.venue %></p>"
+    });
+    var marker = new google.maps.Marker({position: venue, map: map});
+    marker.addListener('click', function() {
+      infowindow.open(map, marker);
+    });
+  }
+</script>
+
+<script async defer
+  src="https://maps.googleapis.com/maps/api/js?key=<%= Rails.application.credentials.google_map_api_key %>&callback=initMap">
+</script>
+
+<style type="text/css">
+  #map {
+    width:100%;
+    height:400px;
+  }
+</style>
