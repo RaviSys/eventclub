@@ -5,6 +5,7 @@
       <div class="card-body">
         <div class="row">
           <div class="col-md-8">
+            <%= image_tag "dummy-event.png", class: "img-fluid" %>
             <p>
               <strong>Name:</strong>
               <%= @event.name %>
@@ -23,11 +24,6 @@
             <p>
               <strong>End date:</strong>
               <%= @event.end_date.strftime("%B %d %Y %H:%M %p") %>
-            </p>
-
-            <p>
-              <strong>Cover image:</strong>
-              <%= @event.cover_image %>
             </p>
 
             <p>

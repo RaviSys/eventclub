@@ -48,4 +48,8 @@ class Event < ApplicationRecord
     (DateTime.now.end_of_month + 1.day).end_of_month
   end
 
+  def short_address
+    "#{self.city}, #{self.country}"
+  end
+
 end
