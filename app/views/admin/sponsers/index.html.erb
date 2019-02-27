@@ -1,29 +1,8 @@
 <div class="container-fluid">
   <div class="row">
     <div class="col-12">
-      <div class="card rounded-0">
-        <div class="card-body">
-          <h3 class="font-weight-bold mt-2 mb-3">Event Sponsers</h3>
-          <table class="table table-bordered">
-            <thead>
-              <tr>
-                <th>Sponser</th>
-                <th>Event</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              <% @sponsers.each do |sponser| %>
-                <tr>
-                  <td><%= sponser.sponsered_by %></td>
-                  <td><%= sponser.event.name %></td>
-                  <td><%= link_to "Show", admin_sponser_path(sponser), class: "btn btn-sm btn-primary rounded-0" %></td>
-                </tr>
-              <% end %>
-            </tbody>
-          </table>
-        </div>
-      </div>
+      <%= render 'admin/sponsers/index/filter', q: @q %>
+      <%= render 'admin/sponsers/index/lists', sponsers: @sponsers %>
     </div>
   </div>
 </div>

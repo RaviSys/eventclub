@@ -1,0 +1,30 @@
+<div class="card rounded-0 mt-2 mb-5">
+  <div class="card-body">
+    <h3 class="mb-4">Filter Speakers</h3>
+    <%= search_form_for @q, url: :admin_speakers do |form| %>
+      <div class="form-group row">
+        <div class="col-md-6">
+          <%= form.text_field :name_cont, class: "form-control rounded-0", placeholder: "Search by name" %>
+        </div>
+        <div class="col-md-6">
+          <%= form.text_field :about_cont, class: "form-control rounded-0", placeholder: "Search by description" %>
+        </div>
+      </div>
+      <div class="form-group row">
+        <div class="col-md-6">
+          <%= form.text_field :city_cont, class: "form-control rounded-0", placeholder: "Search by city" %>
+        </div>
+        <div class="col-md-6">
+          <%= form.text_field :country_cont, class: "form-control rounded-0", placeholder: "Search by country" %>
+        </div>
+      </div>
+      <div class="form-group row">
+        <div class="col-md-6">
+          <%= form.text_field :organization_cont, class: "form-control rounded-0", placeholder: "Search by organization" %>
+        </div>
+      </div>
+      <%= submit_tag "Search", class: "btn btn-primary rounded-0" %>
+      <%= link_to "Reset", admin_speakers_path, class: "btn btn-secondary rounded-0" %>
+    <% end %>
+  </div>
+</div>
