@@ -8,7 +8,7 @@ Rails.application.routes.draw do
     resources :sponsers, only: [:index, :show]
   end
 
-  resources :events, only: :show
+  resources :events, only: [:index, :show]
   
   get '/search_events' => "home#search_events"  
   get 'tags/:tag', to: 'home#tagged_events', as: :tag

@@ -1,6 +1,6 @@
 class HomeController < ApplicationController
   def index
-    @upcoming_events = Event.upcoming_events
+    @upcoming_events = Event.upcoming_events.limit(3)
   end
 
   def search_events

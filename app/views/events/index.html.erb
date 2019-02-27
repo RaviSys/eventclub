@@ -1,21 +1,11 @@
-<div class="jumbotron">
-  <div class="container">
-    <div class="row">
-      <div class="col-md-9 mx-md-auto">
-        <%= render "partials/home_event_search" %>
-      </div>
-    </div>
-  </div>
-</div>
-
 <section class="mb-5 mt-5">
   <div class="container">
     <div class="row">
       <div class="col-md-12">
-        <h1 class="text-center mb-5">Upcoming Events</h1>
+        <h1 class="text-center mb-5">Browse Events</h1>
         <div class="row">
-          <% @upcoming_events.each do |event| %>
-            <div class="col-md-4 mb-4">
+          <% @events.each do |event| %>
+            <div class="col-md-4 mb-5 mt-2">
               <%= link_to event, class: "event-link" do %>
                 <div class="card shadow">
                   <%= image_tag "dummy-event.png", class: "card-img-top" %>  
@@ -38,16 +28,7 @@
             </div>
           <% end %>
         </div>
-        <div class="text-center">
-          <%= link_to "View More", events_path, class: "btn btn-primary btn-lg rounded-0" %>
-        </div>
       </div>
     </div>
   </div>
 </section>
-
-
-<script 
-  src="https://maps.googleapis.com/maps/api/js?key=<%= Rails.application.credentials.google_map_api_key %>&libraries=places&callback=autocompleteEvent"
-  async defer>
-</script>
