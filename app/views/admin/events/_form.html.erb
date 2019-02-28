@@ -77,6 +77,7 @@
       <%= link_to_add_association 'Add Speaker', f, :speakers, class: "btn btn-primary rounded-0 mb-3" %>
     </div>
   </div>
+
   <div id="sponsers">
     <h3>Add speakers this event</h3>
     <hr>
@@ -85,6 +86,17 @@
     <% end %>
     <div class="links">
       <%= link_to_add_association 'Add Sponser', f, :sponsers, class: "btn btn-primary rounded-0 mb-3" %>
+    </div>
+  </div>
+
+  <div id="event_tickets">
+    <h3>Add tickets this event</h3>
+    <hr>
+    <%= f.fields_for :event_tickets do |event_ticket| %>
+      <%= render 'event_ticket_fields', f: event_ticket %>
+    <% end %>
+    <div class="links">
+      <%= link_to_add_association 'Add Event Ticket', f, :event_tickets, class: "btn btn-primary rounded-0 mb-3" %>
     </div>
   </div>
 

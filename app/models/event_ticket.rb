@@ -5,7 +5,7 @@ class EventTicket < ApplicationRecord
   before_create :set_available_tickets
 
   def set_available_tickets
-    self.available_tickets = 0
+    self.available_tickets = self.total_tickets
   end
 
 end

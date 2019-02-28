@@ -14,7 +14,10 @@
           <tr>
             <td><%= sponser.sponsered_by %></td>
             <td><%= sponser.event.name %></td>
-            <td><%= link_to "Show", admin_sponser_path(sponser), class: "btn btn-sm btn-primary rounded-0" %></td>
+            <td>
+              <%= link_to "Show", admin_sponser_path(sponser), class: "btn btn-sm btn-primary rounded-0" %>
+              <%= link_to "Delete", admin_sponser_path(sponser), class: "btn btn-sm btn-danger rounded-0", data: { method: :delete, confirm: "Are you sure?" } %>      
+            </td>
           </tr>
         <% end %>
       </tbody>

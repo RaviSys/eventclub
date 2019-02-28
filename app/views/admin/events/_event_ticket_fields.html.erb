@@ -1,0 +1,21 @@
+<div class="nested-fields">
+  <div class="form-group row">
+    <div class="col-md-4">
+      <%= f.label 'Ticket for' %>
+      <%= f.text_field :ticket_for, class: "form-control rounded-0", placeholder: "Event ticket type" %>
+    </div>
+    <div class="col-md-4">
+      <%= f.label 'Price' %>
+      <%= f.number_field :price, class: "form-control rounded-0", placeholder: "Ticket Price", min: 0 %>
+    </div>
+    <div class="col-md-4">
+      <%= f.label 'Total tickets' %>
+      <%= f.number_field :total_tickets, class: "form-control rounded-0", placeholder: "Total ticket quantity", min: 0 %>
+    </div>
+  </div>
+  <div class="form-group row">
+    <div class="col-md-3">
+      <%= link_to_remove_association "Remove Ticket", f, class: "btn btn-danger rounded-0 mb-3" %>
+    </div>
+  </div>
+</div>
