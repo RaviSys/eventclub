@@ -7,7 +7,7 @@ end
 Rails.application.routes.draw do
   root 'home#index'
   resources :events, only: [:index, :show]
-  get '/search_events' => "home#search_events"  
+  get '/search_events' => 'home#search_events'  
   get 'tags/:tag', to: 'home#tagged_events', as: :tag
 
   draw :admin

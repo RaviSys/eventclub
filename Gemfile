@@ -62,13 +62,14 @@ end
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
-gem 'bootstrap'
-gem 'jquery-rails'
-gem 'devise'
-gem 'ransack'
-gem 'cancancan', '~> 2.0'
 gem 'acts-as-taggable-on', '~> 6.0'
-gem 'geocoder'
+gem 'bootstrap'
+gem 'cancancan', '~> 2.0'
 gem 'cocoon'
+gem 'devise'
 gem 'font-awesome-sass', '~> 5.6.1'
+gem 'geocoder'
+gem 'jquery-rails'
 gem 'kaminari'
+gem 'ransack'
+gem 'rubocop', require: false
