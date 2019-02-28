@@ -1,10 +1,16 @@
 class Event < ApplicationRecord
+  
   has_many :speakers
   accepts_nested_attributes_for :speakers, reject_if: :all_blank, allow_destroy: true
   has_many :sponsers
   accepts_nested_attributes_for :sponsers, reject_if: :all_blank, allow_destroy: true
   has_many :event_tickets
   accepts_nested_attributes_for :event_tickets, reject_if: :all_blank, allow_destroy: true
+
+  validates :name, :description, :start_date, :end_date, :venue, :city, :state, :country, presence: true
+
+  validate :start_date_can_not_be_greater_than_end_date
+
   acts_as_taggable_on :tags
   paginates_per 10
   geocoded_by :venue
@@ -51,6 +57,13 @@ class Event < ApplicationRecord
 
   def short_address
     "#{self.city}, #{self.country}"
+  end
+
+  def start_date_can_not_be_greater_than_end_date
+    return if start_date.blank? || end_date.blank?
+    if start_date > end_date
+      errors.add(:start_date, "can't be greater than end date")
+    end
   end
 
 end
