@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Concerns::AdminCrud
   extend ActiveSupport::Concern
 
@@ -20,7 +22,7 @@ module Concerns::AdminCrud
     def create
       set_resource(resource_class.new(resource_params))
       if get_resource.save
-        redirect_to send("admin_#{plural_resource_name}_path"), flash: { success: "#{resource_name.titleize} has been created successfully." }
+        redirect_to send("admin_#{plural_resource_name}_path"), flash: success
       else
         render :new
       end
@@ -30,7 +32,7 @@ module Concerns::AdminCrud
 
     def update
       if get_resource.update(resource_params)
-        redirect_to send("admin_#{plural_resource_name}_path"), flash: { success: "#{resource_name.titleize} has been updated successfully." }
+        redirect_to send("admin_#{plural_resource_name}_path"), flash: success
       else
         render :edit
       end
@@ -39,11 +41,8 @@ module Concerns::AdminCrud
     def show; end
 
     def destroy
-      if get_resource && get_resource.destroy
-        redirect_to send("admin_#{plural_resource_name}_path"), flash: { success: "#{resource_name.titleize} has been deleted successfully." }
-      else
-        redirect_to send("admin_#{plural_resource_name}_path"), flash: { error: "No #{resource_name} found!" }
-      end
+      message = get_resource&.destroy ? success : error
+      redirect_to send("admin_#{plural_resource_name}_path"), flash: message
     end
 
     private
@@ -53,7 +52,7 @@ module Concerns::AdminCrud
     end
 
     def resource_name
-      @resource_name ||= self.controller_name.singularize
+      @resource_name ||= controller_name.singularize
     end
 
     def plural_resource_name
@@ -61,16 +60,25 @@ module Concerns::AdminCrud
     end
 
     def resource_params
-      self.send("#{resource_name}_params")
+      send("#{resource_name}_params")
     end
 
-    def set_resource(resource=nil)
+    def set_resource(resource = nil)
       resource ||= resource_class.find(params[:id])
       instance_variable_set("@#{resource_name}", resource)
     end
 
     def get_resource
       instance_variable_get("@#{resource_name}")
+    end
+
+    def success
+      name = { 'create': 'created', 'destroy': 'deleted', 'update': 'updated' }
+      { success: t('admin.success', resource: resource_name.titleize, action: name[action_name.to_sym]) }
+    end
+
+    def error
+      { error: t('admin.error', resource: resource_name) }
     end
   end
 end

@@ -1,0 +1,113 @@
+<div>
+  <div>
+    <section class="mb-5 mt-5">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-4 profile">
+            <div class="row">
+              <%= image_tag '/assets/user.png', size: 150%>
+            </div>
+            <div class="row ml-2">
+              <p class="font-weight-bold"><%= current_user.name.capitalize %></p>
+            </div>
+            <div class="row">
+              <ul class="op-list">
+                <li>
+                  <a href="#profile-tickets"><%= "#{current_user_tickets.count}"+" ticket".pluralize(current_user_tickets.count) %></a>
+                </li>
+                <li>
+                  &bull;
+                </li>
+                <li>
+                  <a href="#favourite"><%= "#{current_user_favourites.count}"+" favourite".pluralize(current_user_favourites.count) %></a>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="scroll">
+            <div class="row" id="profile-tickets">
+              <div class="col-md-12">
+                <h5 class="mt-5 mb-5">Tickets</h5>
+                <% @profile_events.each do |event| %>
+                  <div class="row">
+                    <div class="col-md-8 mb-4">
+                      <%= link_to myticket_path(event.id), class: "event-link" do %>
+                        <div class="card shadow">
+                          <%= image_tag "dummy-event.png", class: "card-img-top" %>
+                          <div class="card-body">
+                            <h5 class="text-muted"><%= event.name %></h5>
+                            <small class="text-muted">
+                              <span class="font-weight-bold">
+                                <%= event.start_date.strftime("%b %d %Y %H:%M %p") %>
+                              </span> To
+                              <span class="font-weight-bold">
+                                <%= event.end_date.strftime("%b %d %Y %H:%M %p") %>
+                              </span>
+                            </small><br>
+                            <small class="text-muted">
+                              <i class="fas fa-map-marker mr-2"></i><%= event.short_address %>
+                            </small>
+                          </div>
+                        </div>
+                      <% end %>
+                    </div>
+                  </div>
+                <% end %>
+              </div>
+            </div>
+
+            <div class="row" id="favourite">
+              <div class="col-md-12">
+                <hr>
+                <h5 class="mt-5 mb-5">Favourites</h5>
+                <div class="row">
+                  <% @favourite_events.each do |fav| %>
+                  <div class="col-md-6 mb-4">
+                    <%= link_to fav.event, class: "event-link" do %>
+                      <div class="card shadow">
+                        <%= image_tag "dummy-event.png", class: "card-img-top" %>
+                        <div class="card-body">
+                          <h5 class="text-muted"><%= fav.name %></h5>
+                          <small class="text-muted">
+                            <span class="font-weight-bold">
+                              <%= fav.start_date.strftime("%b %d %Y %H:%M %p") %>
+                            </span> To
+                            <span class="font-weight-bold">
+                              <%= fav.end_date.strftime("%b %d %Y %H:%M %p") %>
+                            </span>
+                          </small><br>
+                          <small class="text-muted">
+                            <i class="fas fa-map-marker mr-2"></i><%= fav.short_address %>
+                          </small>
+                        </div>
+                      </div>
+                    <% end %>
+                  </div>
+                  <% end %>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+</div>
+
+<style type="text/css">
+  .scroll {
+    width: 70%;
+    margin-left: 30%;
+  }
+  .profile{
+    position: fixed;
+    top: auto;
+  }
+  ul.op-list li {
+    display: inline;
+  }
+  ul.op-list{
+    margin-left: -8%;
+  }
+</style>

@@ -4,7 +4,7 @@ development:
   database: eventclub_development
   pool: 5
   username: postgres
-  password: postgres
+  password: 123456
   host: localhost
 
 test:
@@ -13,5 +13,5 @@ test:
   database: eventclub_test
   pool: 5
   username: postgres
-  password: postgres
+  password: 123456
   host: localhost

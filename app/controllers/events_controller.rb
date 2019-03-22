@@ -1,11 +1,11 @@
-class EventsController < ApplicationController
+# frozen_string_literal: true
 
+class EventsController < ApplicationController
   def index
     @events = Event.upcoming_events
-  end  
-
-  def show
-    @event = Event.find(params[:id])
   end
 
+  def show
+    @event = Event.friendly.find(params[:id])
+  end
 end

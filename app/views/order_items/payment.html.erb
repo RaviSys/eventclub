@@ -1,0 +1,150 @@
+<div class="card">
+  <div class="card-header text-center">
+    Book Ticket
+  </div>
+  <div class="card-body">
+    <h5 class="card-title text-primary text-center">Registration closes in <span id="time"></span> minutes!</h5>
+    <div class="card form-card">
+      <div class="card-body">
+        <form id="charge-from" method="post" action="/payment" method="POST" role="form">
+          <div class="form-group">
+            <label for="card-element">Name: <%= current_user.name %></label>
+          </div>
+          <% @order_items.each do |order_item| %>
+            <div class="form-group">
+              <label for="card-element"><%= order_item.event_ticket.ticket_for %> Ticket: <%= order_item.quantity %></label>
+            </div>
+            <div class="form-group">
+              <label for="card-element">Amount: <%= order_item.amount %></label>
+            </div>
+          <% end %>
+          <div class="form-group">
+            <% total = @order_items.pluck(:amount).reduce{|a,b| a+b} %>
+            <input type="hidden" name="total_amount" value="<%= total %>">
+            <label for="card-element" class="font-weight-bold text-danger">Total:   <%= total %></label>
+          </div>
+          <div class="form-group">
+            <label for="card-element">Credit or Debit Card</label>
+            <div id="card-element"></div>
+          </div>
+          <div class="form-group text-center">
+            <button type="submit" class="btn btn-primary mt-3 pay-btn">PAY</button>
+            <div id="card-errors" role="alert" class="text-danger"></div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  <div class="card-footer text-muted small text-center">
+    pay securely
+  </div>
+</div>
+
+<!-- jquery call for stripe -->
+
+<script type="text/javascript" src="https://js.stripe.com/v3/"></script>
+
+<script>
+  var stripe = Stripe('<%=  Rails.configuration.stripe[:publishable_key] %>');
+
+  var elements = stripe.elements();
+
+  var style = {
+    base: {
+      color: '#32325d',
+      lineHeight: '18px',
+      fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
+      fontSmoothing: 'antialiased',
+      fontSize: '16px',
+      '::placeholder': {
+        color: '#aab7c4'
+      }
+    },
+    invalid: {
+      color: '#fa755a',
+      iconColor: '#fa755a'
+    }
+  };
+
+  var card = elements.create('card', {style: style});
+  card.mount('#card-element');
+  card.addEventListener('change', function(event) {
+    var displayError = document.getElementById('card-errors');
+    if (event.error) {
+      displayError.textContent = event.error.message;
+    } else {
+      displayError.textContent = '';
+    }
+  });
+
+  var form = document.getElementById('charge-from');
+  form.addEventListener('submit', function(event) {
+    event.preventDefault();
+
+    stripe.createToken(card).then(function(result) {
+      if (result.error) {
+        var errorElement = document.getElementById('card-errors');
+        errorElement.textContent = result.error.message;
+      } else {
+        stripeTokenHandler(result.token);
+      }
+    });
+  });
+  function stripeTokenHandler(token) {
+    var form = document.getElementById('charge-from');
+    var hiddenInput = document.createElement('input');
+    hiddenInput.setAttribute('type', 'hidden');
+    hiddenInput.setAttribute('name', 'stripeToken');
+    hiddenInput.setAttribute('value', token.id);
+    form.appendChild(hiddenInput);
+    form.submit();
+  }
+</script>
+
+
+<script type="text/javascript">
+  function startTimer(duration, display) {
+    var start = Date.now(),
+        diff,
+        minutes,
+        seconds;
+    function timer() {
+        diff = duration - (((Date.now() - start) / 1000) | 0);
+
+        minutes = (diff / 60) | 0;
+        seconds = (diff % 60) | 0;
+
+        minutes = minutes < 10 ? "0" + minutes : minutes;
+        seconds = seconds < 10 ? "0" + seconds : seconds;
+
+        if (minutes == 0 && seconds == 0) {
+          alert("time over");
+          destroy_order();
+        }
+        else {
+          if (minutes <= 0 && seconds <= 59) {
+            $("h5").attr("class", "text-danger text-center card-title");
+            $(".pay-btn").attr("class", "btn-danger btn btn-primary mt-3 pay-btn");
+            display.classList.value = "text-danger";
+          }
+          else {
+            display.classList.value = "text-primary";
+          }
+          display.textContent = minutes + ":" + seconds;
+        }
+    };
+    timer();
+    setInterval(timer, 1000);
+}
+
+window.onload = function () {
+    var tenMinutes = 60 * 10,
+    display = document.querySelector('#time');
+    startTimer(tenMinutes, display);
+};
+
+function destroy_order() {
+  hash = {url: '/cancel_order', type: 'delete'};
+  $.ajax(hash);
+}
+</script>

@@ -1,0 +1,42 @@
+<%= stylesheet_link_tag wicked_pdf_asset_base64("application.scss") %>
+
+<div class="card">
+  <% @order_items.each do |order_item| %>
+    <div class="card-header">
+      <div class="float-left">
+        <p class="text-primary">EventClub</p>
+      </div>
+      <div class="float-right">
+        <p>#<%= order_item.event_ticket.id %></p>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="float-left">
+        <p><%= order_item.event_ticket.name %></p>
+        <p><%= order_item.event_ticket.venue %></p>
+        <p><%= order_item.event_ticket.start_date.strftime("%A, %B %C, %Y from %l:%M (IST)")%></p>
+        <p class="text-danger">For: <%= pluralize(order_item.quantity, 'person') %></p>
+        <p class="text-danger">&#8377; <%= order_item.amount %></p>
+        <p class="small text-secondary">Order Information</p>
+        <p class="small"><%= "Order ##{order_item.id} ordered by #{current_user.name} on #{order_item.event_ticket.created_at}" %></p>
+      </div>
+      <div class="float-right">
+        <% qrdata = "Event Name: #{order_item.event_ticket.name}\nTicket Id: #{order_item.id} \nNumber of  seat: #{order_item.quantity} \nVenue: #{order_item.event_ticket.venue} \nTime: #{order_item.event_ticket.start_date.strftime('%A, %B %C, %Y from %l:%M (IST)')} \nTicket For: #{pluralize(order_item.quantity, 'person')} \nPaid Amount: #{order_item.amount}" %>
+        <% qrcode = RQRCode::QRCode.new(qrdata) %>
+
+        <%= raw qrcode.as_svg(offset: 0, color: '000',
+                              shape_rendering: 'crispEdges',
+                              module_size: 3) %>
+      </div>
+    </div>
+  <% end %>
+</div>
+
+<style type="text/css">
+  .card-header {
+    height: 4%;
+  }
+  .card-body {
+    height: 95%;
+  }
+</style>

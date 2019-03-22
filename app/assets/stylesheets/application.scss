@@ -2,3 +2,23 @@
 @import "font-awesome-sprockets";
 @import "font-awesome";
 @import "custom";
+@import "thankyou";
+
+
+.fav {
+  cursor: pointer;
+}
+
+.price_div {
+  position: absolute;
+  top: 53%;
+}
+
+.w-100 {
+  width: 100%;
+}
+
+.form-card{
+  max-width: 40rem;
+  margin-left: 25%;
+}

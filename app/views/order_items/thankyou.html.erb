@@ -1,0 +1,8 @@
+<div class="card thankyou-card">
+  <div class="card-title thankyou-card-body">
+    Thank you for boooking ticket...
+  </div>
+  <div class="card-body">
+    <p class="btn btn-primary ml-4 pl-4 pr-4 bg-light"><%= link_to "Get E-Ticket", order_item_path(@order_items.map(&:id), format: "html") %></p>
+  </div>
+</div>

@@ -30,4 +30,6 @@
 # available at http://guides.rubyonrails.org/i18n.html.
 
 en:
-  hello: "Hello world"
+  admin:
+    'success': "%{resource} has been %{action} successfully."
+    'error': "No %{resource} found!"

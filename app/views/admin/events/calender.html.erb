@@ -1,0 +1,26 @@
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.0/fullcalendar.min.js"></script>
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.0/fullcalendar.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.0/fullcalendar.print.css"></script>
+
+<%= Gon::Base.render_data %>
+<div id='calendar'></div>
+
+<script type="text/javascript">
+  $(function() {
+    var event_array = gon.events
+
+    $('#calendar').fullCalendar({
+      defaultView: 'month',
+
+      eventSources: [{
+        events: event_array,
+        color: '#007bff',
+        textColor: '#f2f2f2'
+      }],
+
+      eventClick: function(calEvent, jsEvent, view) {
+          window.location.replace(calEvent.slug);
+        }
+    })
+  });
+</script>

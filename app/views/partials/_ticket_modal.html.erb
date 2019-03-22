@@ -1,0 +1,87 @@
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Register</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form action="/order_items" method="post">
+        <div class="modal-body">
+          <input type="hidden" name="quantity" value="" id="q">
+          <input type="hidden" name="amount" value="" id="a">
+          <% amt_arr = [] %>
+          <% @event.event_tickets.each do |ticket| %>
+            <% amt_arr << ticket.price %>
+            <% if ticket.available_tickets > 0 %>
+              <div class="card rounded-0">
+                <div class="card-body">
+                  <div class="btn-group">
+                    <p class="ticket_for"><%= ticket.ticket_for %></p>
+                    <div class="price_div">
+                      <p><span class="price"><%= ticket.price %>₹</span></p>
+                    </div>
+                  </div>
+                  <div class="float-right">
+                    <select name="ticket" class="btn dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="<%= ticket.id %>">
+                    <div class="dropdown-menu">
+                      <option value="0" selected="selected">0</option>
+                      <% ((ticket.available_tickets).to_i%11).times do |num| %>
+                        <option value="<%= num+1 %>"><%= num+1 %></option>
+                      <% end %>
+                    </div>
+                    </select>
+                  </div>
+                </div>
+              </div>
+            <% else %>
+              <p class="small text-secondary">No ticktes avialable for <%= ticket.ticket_for %></p>
+            <% end %>
+          <% end %>
+        </div>
+        <div class="modal-footer hide">
+          <div class="hidden w-100">
+            <span>QTY: <span id="quantity"></span></span>
+            <span class="ml-5"><span id="amount"></span>₹</span>
+          </div>
+          <button type="submit" class="btn btn-primary checkout" disabled>Checkout</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script type="text/javascript">
+  var ids = <%= @event.event_tickets.ids %>;
+  var amt_arr = <%= amt_arr %>;
+  var id_amt_hash = {};
+  var quantity = {};
+  var amount = 0;
+
+  for (var i = 0; i < ids.length; i++) {
+    id_amt_hash[ids[i]] = amt_arr[i];
+  }
+
+  $(document).on('change', 'select', function(){
+    $('.hidden').show();
+    $("button.checkout").removeAttr("disabled");
+    quantity[this.id] = this.value;
+    var amount = 0;
+    ids.forEach((element)=> {
+      if (!quantity[element]) {
+        quantity[element] = 0;
+      }
+      amount += id_amt_hash[element] * quantity[element];
+    });
+    q = Object.values(quantity).reduce((a,b) => eval(a)+eval(b) )
+    $('#q').val(JSON.stringify(quantity));
+    $('#a').val(JSON.stringify(id_amt_hash));
+    $('span#quantity').text(q);
+    $('#amount').text(amount);
+  });
+
+  $(function(){
+    $('.hidden').hide();
+  });
+</script>

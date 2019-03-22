@@ -95,7 +95,7 @@
               </div>
             <% end %>
           </div>
-        <% end %>          
+        <% end %>
         <%= link_to 'Edit', edit_admin_event_path(@event),class: "btn btn-secondary btn-sm rounded-0" %> |
         <%= link_to 'Back', admin_events_path,class: "btn btn-primary btn-sm rounded-0" %>
       </div>
@@ -107,7 +107,7 @@
   function initMap() {
     var venue = {lat: <%= @event.latitude %>, lng: <%= @event.longitude %>};
     var map = new google.maps.Map(
-      document.getElementById('map'), 
+      document.getElementById('map'),
       {zoom: 12, center: venue}
     );
     var infowindow = new google.maps.InfoWindow({

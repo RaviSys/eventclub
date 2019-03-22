@@ -15,12 +15,13 @@
             <td>
               <%= link_to 'Show', admin_event_path(event), class: "btn btn-primary btn-sm rounded-0" %>
               <%= link_to 'Edit', edit_admin_event_path(event),class: "btn btn-secondary btn-sm rounded-0" %>
-              <%= link_to 'Destroy', admin_event_path(event), method: :delete, data: { confirm: 'Are you sure?' },class: "btn btn-danger btn-sm rounded-0" %>  
+              <%= link_to 'Destroy', admin_event_path(event), method: :delete, data: { confirm: 'Are you sure?' },class: "btn btn-danger btn-sm rounded-0" %>
             </td>
           </tr>
         <% end %>
       </tbody>
     </table>
     <%= link_to 'New Event', new_admin_event_path, class: "btn btn-primary rounded-0 btn-lg" %>
+    <%= link_to 'View Calender', calender_admin_events_path, class: "btn btn-primary rounded-0 btn-lg" %>
   </div>
 </div>
